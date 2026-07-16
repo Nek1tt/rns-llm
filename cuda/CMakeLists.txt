@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.24)
+project(rns_cuda LANGUAGES CXX CUDA)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CUDA_STANDARD 17)
+add_library(rns_cuda_stub STATIC src/rns_gemm.cu)
+target_include_directories(rns_cuda_stub PUBLIC include)
