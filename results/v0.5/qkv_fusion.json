@@ -1,0 +1,138 @@
+{
+  "hidden": 768,
+  "quant_bits": 8,
+  "results": [
+    {
+      "tokens": 1,
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "correctness": {
+        "fused_equals_three_rns_linears": true,
+        "max_absolute_error": 0.0
+      },
+      "three_separate_rns": {
+        "p50_ms": 1.9676159620285034,
+        "p95_ms": 2.484447956085205
+      },
+      "one_fused_qkv_rns": {
+        "p50_ms": 0.8588320016860962,
+        "p95_ms": 1.0199040174484253
+      },
+      "speedup": 2.2910370807859914,
+      "backend_stats_separate": {
+        "encode_centered_calls": 300,
+        "encode_centered_values": 230400,
+        "fused_gemm_calls": 300,
+        "fused_gemm_channels_4": 300
+      },
+      "backend_stats_fused": {
+        "encode_centered_calls": 100,
+        "encode_centered_values": 76800,
+        "fused_gemm_calls": 100,
+        "fused_gemm_channels_4": 100
+      }
+    },
+    {
+      "tokens": 16,
+      "shape": [
+        1,
+        16,
+        768
+      ],
+      "correctness": {
+        "fused_equals_three_rns_linears": true,
+        "max_absolute_error": 0.0
+      },
+      "three_separate_rns": {
+        "p50_ms": 2.184224009513855,
+        "p95_ms": 2.614464044570923
+      },
+      "one_fused_qkv_rns": {
+        "p50_ms": 0.5916479825973511,
+        "p95_ms": 0.6901760101318359
+      },
+      "speedup": 3.691762794364735,
+      "backend_stats_separate": {
+        "encode_centered_calls": 300,
+        "encode_centered_values": 3686400,
+        "fused_gemm_calls": 300,
+        "fused_gemm_channels_4": 300
+      },
+      "backend_stats_fused": {
+        "encode_centered_calls": 100,
+        "encode_centered_values": 1228800,
+        "fused_gemm_calls": 100,
+        "fused_gemm_channels_4": 100
+      }
+    },
+    {
+      "tokens": 128,
+      "shape": [
+        1,
+        128,
+        768
+      ],
+      "correctness": {
+        "fused_equals_three_rns_linears": true,
+        "max_absolute_error": 0.0
+      },
+      "three_separate_rns": {
+        "p50_ms": 1.3904320001602173,
+        "p95_ms": 1.5300480127334595
+      },
+      "one_fused_qkv_rns": {
+        "p50_ms": 0.6351040005683899,
+        "p95_ms": 0.6941440105438232
+      },
+      "speedup": 2.1892981289927986,
+      "backend_stats_separate": {
+        "encode_centered_calls": 300,
+        "encode_centered_values": 29491200,
+        "fused_gemm_calls": 300,
+        "fused_gemm_channels_4": 300
+      },
+      "backend_stats_fused": {
+        "encode_centered_calls": 100,
+        "encode_centered_values": 9830400,
+        "fused_gemm_calls": 100,
+        "fused_gemm_channels_4": 100
+      }
+    },
+    {
+      "tokens": 256,
+      "shape": [
+        1,
+        256,
+        768
+      ],
+      "correctness": {
+        "fused_equals_three_rns_linears": true,
+        "max_absolute_error": 0.0
+      },
+      "three_separate_rns": {
+        "p50_ms": 1.5443840026855469,
+        "p95_ms": 1.7155200242996216
+      },
+      "one_fused_qkv_rns": {
+        "p50_ms": 0.7018559873104095,
+        "p95_ms": 0.8253759741783142
+      },
+      "speedup": 2.20042862155212,
+      "backend_stats_separate": {
+        "encode_centered_calls": 300,
+        "encode_centered_values": 58982400,
+        "fused_gemm_calls": 300,
+        "fused_gemm_channels_4": 300
+      },
+      "backend_stats_fused": {
+        "encode_centered_calls": 100,
+        "encode_centered_values": 19660800,
+        "fused_gemm_calls": 100,
+        "fused_gemm_channels_4": 100
+      }
+    }
+  ]
+}

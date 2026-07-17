@@ -1,0 +1,56 @@
+{
+  "model": "facebook/opt-125m",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "replacement_mode": "opt-qkv",
+  "quant_bits": 8,
+  "runs": [
+    {
+      "attention_blocks": 1,
+      "include_out_proj": true,
+      "dataset_samples": 64,
+      "replaced_modules": [
+        "model.decoder.layers.0.self_attn.qkv_fused",
+        "model.decoder.layers.0.self_attn.out_proj"
+      ],
+      "backend_stats": {
+        "encode_centered_calls": 28,
+        "encode_centered_values": 12300288,
+        "fused_gemm_calls": 26,
+        "fused_gemm_channels_4": 26
+      },
+      "qkv_fused_compute_count": 13,
+      "baseline_ppl": 31.571423,
+      "rns_ppl": 31.570559,
+      "relative_increase_percent": -0.003,
+      "under_5_percent": true
+    },
+    {
+      "attention_blocks": 4,
+      "include_out_proj": true,
+      "dataset_samples": 256,
+      "replaced_modules": [
+        "model.decoder.layers.0.self_attn.qkv_fused",
+        "model.decoder.layers.0.self_attn.out_proj",
+        "model.decoder.layers.1.self_attn.qkv_fused",
+        "model.decoder.layers.1.self_attn.out_proj",
+        "model.decoder.layers.2.self_attn.qkv_fused",
+        "model.decoder.layers.2.self_attn.out_proj",
+        "model.decoder.layers.3.self_attn.qkv_fused",
+        "model.decoder.layers.3.self_attn.out_proj"
+      ],
+      "backend_stats": {
+        "encode_centered_calls": 528,
+        "encode_centered_values": 212729856,
+        "fused_gemm_calls": 520,
+        "fused_gemm_channels_4": 520
+      },
+      "qkv_fused_compute_count": 260,
+      "baseline_ppl": 32.923428,
+      "rns_ppl": 33.064659,
+      "relative_increase_percent": 0.429,
+      "under_5_percent": true
+    }
+  ],
+  "caveat": "The two runs used different dataset sample counts. Compare baseline and RNS only within the same run."
+}

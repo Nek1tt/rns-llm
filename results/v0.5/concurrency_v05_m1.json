@@ -1,0 +1,69 @@
+{
+  "shape_per_request": {
+    "m": 1,
+    "k": 768,
+    "n": 768
+  },
+  "source_bits": 8,
+  "moduli": [
+    255,
+    253,
+    251,
+    247
+  ],
+  "queue_delay_included": false,
+  "note": "Continuous batching measures execution after requests are ready; a production service must add queueing-delay metrics.",
+  "results": {
+    "1": {
+      "independent_streams": {
+        "batch_p50_ms": 0.20779400000492387,
+        "batch_p95_ms": 0.25385799995092384,
+        "throughput_requests_per_second": 4812.458492431466
+      },
+      "continuous_batch": {
+        "batch_p50_ms": 0.2940769999781878,
+        "batch_p95_ms": 0.35024499999281034,
+        "throughput_requests_per_second": 3400.4699451986103
+      },
+      "continuous_batch_speedup": 0.7065972518093435,
+      "correctness": {
+        "passed": true,
+        "max_absolute_error": 0
+      }
+    },
+    "2": {
+      "independent_streams": {
+        "batch_p50_ms": 0.4579570000089461,
+        "batch_p95_ms": 2.968506999991405,
+        "throughput_requests_per_second": 4367.222250038607
+      },
+      "continuous_batch": {
+        "batch_p50_ms": 0.34301449997542477,
+        "batch_p95_ms": 1.9263209999849096,
+        "throughput_requests_per_second": 5830.6573049923245
+      },
+      "continuous_batch_speedup": 1.3350951637372659,
+      "correctness": {
+        "passed": true,
+        "max_absolute_error": 0
+      }
+    },
+    "4": {
+      "independent_streams": {
+        "batch_p50_ms": 0.8688474999871687,
+        "batch_p95_ms": 3.1475740000246333,
+        "throughput_requests_per_second": 4603.7998613785185
+      },
+      "continuous_batch": {
+        "batch_p50_ms": 0.4075209999996332,
+        "batch_p95_ms": 1.9783760000109396,
+        "throughput_requests_per_second": 9815.445093635912
+      },
+      "continuous_batch_speedup": 2.1320312327167206,
+      "correctness": {
+        "passed": true,
+        "max_absolute_error": 0
+      }
+    }
+  }
+}
