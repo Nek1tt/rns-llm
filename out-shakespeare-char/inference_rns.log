@@ -1,0 +1,11 @@
+backend=rns
+device=NVIDIA GeForce RTX 5060 Laptop GPU
+generated_tokens=32
+latency_p50_ms=1535.965
+latency_p95_ms=1594.124
+tokens_per_second=20.834
+gpu_peak_allocated_bytes=214364160
+gpu_peak_reserved_bytes=232783872
+process_peak_rss_bytes=1377685504
+backend_stats={'encode_centered_calls': 27040, 'encode_centered_values': 62946240, 'centered_gemm_calls': 15520, 'centered_gemm_kernel_dp4a': 15520, 'dynamic_matmul_calls': 11520}
+json=D:\VM\mount\nanoGPT\out-shakespeare-char\inference_rns.json

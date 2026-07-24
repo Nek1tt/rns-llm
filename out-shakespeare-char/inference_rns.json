@@ -1,0 +1,136 @@
+{
+  "backend": "rns",
+  "timestamp_unix": 1784874062.0219858,
+  "software": {
+    "python": "3.10.18",
+    "torch": "2.9.0+cu128",
+    "torch_cuda": "12.8"
+  },
+  "hardware": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "device_type": "cuda"
+  },
+  "model": {
+    "out_dir": "D:\\VM\\mount\\nanoGPT\\out-shakespeare-char",
+    "parameters": 10745088,
+    "block_size": 256,
+    "prompt_tokens": 1,
+    "generated_tokens": 32,
+    "dtype": "float16",
+    "compile": false
+  },
+  "rns": {
+    "quant_bits": 8,
+    "attention_matmul": true,
+    "include_lm_head": true,
+    "fused": true,
+    "lut_channels": 2,
+    "installation": {
+      "mode": "rns",
+      "package_path": "D:\\VM\\mount\\rns-llm\\src\\rns_llm\\__init__.py",
+      "replaced_linears": [
+        "transformer.h.0.attn.c_attn",
+        "transformer.h.0.attn.c_proj",
+        "transformer.h.0.mlp.c_fc",
+        "transformer.h.0.mlp.c_proj",
+        "transformer.h.1.attn.c_attn",
+        "transformer.h.1.attn.c_proj",
+        "transformer.h.1.mlp.c_fc",
+        "transformer.h.1.mlp.c_proj",
+        "transformer.h.2.attn.c_attn",
+        "transformer.h.2.attn.c_proj",
+        "transformer.h.2.mlp.c_fc",
+        "transformer.h.2.mlp.c_proj",
+        "transformer.h.3.attn.c_attn",
+        "transformer.h.3.attn.c_proj",
+        "transformer.h.3.mlp.c_fc",
+        "transformer.h.3.mlp.c_proj",
+        "transformer.h.4.attn.c_attn",
+        "transformer.h.4.attn.c_proj",
+        "transformer.h.4.mlp.c_fc",
+        "transformer.h.4.mlp.c_proj",
+        "transformer.h.5.attn.c_attn",
+        "transformer.h.5.attn.c_proj",
+        "transformer.h.5.mlp.c_fc",
+        "transformer.h.5.mlp.c_proj",
+        "lm_head"
+      ],
+      "linear_count": 25,
+      "attention_blocks": 6,
+      "tied_lm_head_preserved": true,
+      "qk_compute_count": 1344,
+      "av_compute_count": 1344
+    }
+  },
+  "timing": {
+    "synchronization": "torch.cuda.synchronize",
+    "warmup_runs": 2,
+    "warmup_ms": [
+      2328.5887999991246,
+      1535.0982999989355
+    ],
+    "measured_runs": 5,
+    "samples_ms": [
+      1533.6118000013812,
+      1535.9654999992927,
+      1568.4404999992694,
+      1513.7959999992745,
+      1600.544599998102
+    ],
+    "latency_p50_ms": 1535.9654999992927,
+    "latency_p95_ms": 1594.1237799983355,
+    "tokens_per_second": 20.833801280051365
+  },
+  "memory": {
+    "gpu_allocated_bytes": 213512192,
+    "gpu_reserved_bytes": 232783872,
+    "gpu_peak_allocated_bytes": 214364160,
+    "gpu_peak_reserved_bytes": 232783872,
+    "process_peak_rss_bytes": 1377685504
+  },
+  "backend_stats": {
+    "encode_centered_calls": 27040,
+    "encode_centered_values": 62946240,
+    "centered_gemm_calls": 15520,
+    "centered_gemm_kernel_dp4a": 15520,
+    "dynamic_matmul_calls": 11520
+  },
+  "output": {
+    "token_ids": [
+      0,
+      0,
+      23,
+      21,
+      26,
+      19,
+      1,
+      30,
+      21,
+      15,
+      20,
+      13,
+      30,
+      16,
+      1,
+      21,
+      21,
+      10,
+      0,
+      31,
+      53,
+      1,
+      47,
+      57,
+      1,
+      58,
+      46,
+      43,
+      1,
+      58,
+      56,
+      59,
+      58
+    ],
+    "sha256": "dca6c5e7aa75c55b0cd70db18e1aee449459dbccc2f3aef1faab9215aab603ec"
+  }
+}

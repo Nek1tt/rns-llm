@@ -1,0 +1,95 @@
+{
+  "backend": "torch",
+  "timestamp_unix": 1784874047.2606602,
+  "software": {
+    "python": "3.10.18",
+    "torch": "2.9.0+cu128",
+    "torch_cuda": "12.8"
+  },
+  "hardware": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "device_type": "cuda"
+  },
+  "model": {
+    "out_dir": "D:\\VM\\mount\\nanoGPT\\out-shakespeare-char",
+    "parameters": 10745088,
+    "block_size": 256,
+    "prompt_tokens": 1,
+    "generated_tokens": 32,
+    "dtype": "float16",
+    "compile": false
+  },
+  "rns": {
+    "quant_bits": 8,
+    "attention_matmul": true,
+    "include_lm_head": true,
+    "fused": true,
+    "lut_channels": 2,
+    "installation": null
+  },
+  "timing": {
+    "synchronization": "torch.cuda.synchronize",
+    "warmup_runs": 2,
+    "warmup_ms": [
+      577.6461999994353,
+      74.95399999970687
+    ],
+    "measured_runs": 5,
+    "samples_ms": [
+      82.44150000246009,
+      77.08429999911459,
+      76.54579999871203,
+      81.20469999994384,
+      76.97619999817107
+    ],
+    "latency_p50_ms": 77.08429999911459,
+    "latency_p95_ms": 82.19414000195684,
+    "tokens_per_second": 415.12992918619693
+  },
+  "memory": {
+    "gpu_allocated_bytes": 183280640,
+    "gpu_reserved_bytes": 216006656,
+    "gpu_peak_allocated_bytes": 207566336,
+    "gpu_peak_reserved_bytes": 216006656,
+    "process_peak_rss_bytes": 1551794176
+  },
+  "backend_stats": {},
+  "output": {
+    "token_ids": [
+      0,
+      0,
+      23,
+      21,
+      26,
+      19,
+      1,
+      30,
+      21,
+      15,
+      20,
+      13,
+      30,
+      16,
+      1,
+      21,
+      21,
+      10,
+      0,
+      31,
+      53,
+      1,
+      47,
+      57,
+      1,
+      58,
+      46,
+      43,
+      1,
+      58,
+      56,
+      59,
+      58
+    ],
+    "sha256": "dca6c5e7aa75c55b0cd70db18e1aee449459dbccc2f3aef1faab9215aab603ec"
+  }
+}

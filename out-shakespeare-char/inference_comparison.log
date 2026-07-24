@@ -1,0 +1,10 @@
+torch_latency_p50_ms=77.084
+rns_latency_p50_ms=1535.965
+rns_speedup_vs_torch=0.050186
+rns_slowdown_vs_torch=19.925789
+torch_gpu_peak_allocated_bytes=207566336
+rns_gpu_peak_allocated_bytes=214364160
+rns_minus_torch_bytes=6797824
+generated_token_match_fraction=1.0
+rns_backend_stats={'encode_centered_calls': 27040, 'encode_centered_values': 62946240, 'centered_gemm_calls': 15520, 'centered_gemm_kernel_dp4a': 15520, 'dynamic_matmul_calls': 11520}
+json=D:\VM\mount\nanoGPT\out-shakespeare-char\inference_comparison.json

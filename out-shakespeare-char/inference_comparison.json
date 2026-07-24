@@ -1,0 +1,33 @@
+{
+  "torch_result": "D:\\VM\\mount\\nanoGPT\\out-shakespeare-char\\inference_torch.json",
+  "rns_result": "D:\\VM\\mount\\nanoGPT\\out-shakespeare-char\\inference_rns.json",
+  "speed": {
+    "torch_latency_p50_ms": 77.08429999911459,
+    "rns_latency_p50_ms": 1535.9654999992927,
+    "rns_speedup_vs_torch": 0.050186218374794284,
+    "rns_slowdown_vs_torch": 19.925789038973374,
+    "torch_tokens_per_second": 415.12992918619693,
+    "rns_tokens_per_second": 20.833801280051365
+  },
+  "memory": {
+    "torch_gpu_peak_allocated_bytes": 207566336,
+    "rns_gpu_peak_allocated_bytes": 214364160,
+    "rns_minus_torch_bytes": 6797824,
+    "rns_over_torch_ratio": 1.0327501276507574,
+    "torch_process_peak_rss_bytes": 1551794176,
+    "rns_process_peak_rss_bytes": 1377685504
+  },
+  "output_agreement": {
+    "compared_generated_tokens": 32,
+    "matching_positions": 32,
+    "matching_fraction": 1.0,
+    "note": "Sampling divergence is expected after quantized logits differ."
+  },
+  "rns_backend_stats": {
+    "encode_centered_calls": 27040,
+    "encode_centered_values": 62946240,
+    "centered_gemm_calls": 15520,
+    "centered_gemm_kernel_dp4a": 15520,
+    "dynamic_matmul_calls": 11520
+  }
+}

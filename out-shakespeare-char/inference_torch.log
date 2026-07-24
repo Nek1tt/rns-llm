@@ -1,0 +1,11 @@
+backend=torch
+device=NVIDIA GeForce RTX 5060 Laptop GPU
+generated_tokens=32
+latency_p50_ms=77.084
+latency_p95_ms=82.194
+tokens_per_second=415.130
+gpu_peak_allocated_bytes=207566336
+gpu_peak_reserved_bytes=216006656
+process_peak_rss_bytes=1551794176
+backend_stats={}
+json=D:\VM\mount\nanoGPT\out-shakespeare-char\inference_torch.json
