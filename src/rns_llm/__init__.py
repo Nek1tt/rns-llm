@@ -1,10 +1,16 @@
-from .backends import CudaRNSBackend, TorchReferenceBackend
-from .reference import decode_numpy, encode_numpy, rns_matmul_numpy
+"""RNS-LLM experimental CUDA package.
 
-__all__ = [
-    "CudaRNSBackend",
-    "TorchReferenceBackend",
-    "encode_numpy",
-    "decode_numpy",
-    "rns_matmul_numpy",
-]
+PyTorch C++/CUDA extension modules link against libraries such as ``libc10`` and
+``libtorch_python``.  Importing :mod:`torch` first loads those DSOs, which makes
+direct imports such as ``import rns_llm._PREFILL`` reliable in a fresh Python
+process and in Google Colab.  The CUDA extensions themselves are still not
+imported eagerly, so the pure-Python audit utilities remain usable without a
+compiled extension.
+"""
+
+try:
+    import torch as _torch  # noqa: F401  # preload PyTorch shared libraries
+except Exception:
+    _torch = None
+
+__version__ = "0.14.2"

@@ -1,0 +1,5 @@
+transformers>=4.45,<5
+datasets>=2.19,<5
+accelerate>=0.33
+safetensors>=0.4
+sentencepiece>=0.2

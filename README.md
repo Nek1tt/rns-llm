@@ -1,147 +1,95 @@
-# RNS LLM CUDA Lab v0.5
+# RNS LLM v0.14.2 — full-RNS and hybrid Attention study
 
-Research prototype for mapping Residue Number System (RNS) arithmetic onto NVIDIA INT8 GPU operations inside Transformer inference.
+Это единый release для итоговой статьи SMILES 2026. Он объединяет full-RNS ветку v0.7/v0.13 и hybrid ветку v0.11.3, возвращает compact LUT в обе архитектуры и запускает одинаковые проверки на одном GPU.
 
-## Primary objective
+## Что проверяется
 
-The main project goal is practical:
+1. **Full-RNS**
+   - RNS-INT8, RNS-INT16 и RNS-INT32;
+   - каждый modulus не превышает 8 бит;
+   - large-prime и school-small moduli policies;
+   - v0.7 optimized q8 epilogue как отдельный вариант;
+   - v0.13 128-bit Garner для INT16/INT32.
 
-> Improve end-to-end LLM inference speed and/or reduce total GPU memory relative to FP16 and native INT8, while keeping the relative PPL increase below 5%.
+2. **Hybrid**
+   - INT8 main path;
+   - FP16 correction как контроль;
+   - RNS correction q8/q16/q32;
+   - serial и parallel execution;
+   - protected channels выбираются детерминированно либо из calibration plan.
 
-Version 0.5 is the frozen correctness-first baseline before the final FP16/native-INT8/RNS comparison.
+3. **LUT ablation для обеих архитектур**
+   - `none`, `one`, `two`, `all`;
+   - реально выделяется только активное число таблиц;
+   - одна compact LUT имеет форму `[4,256] int16`, то есть 2048 bytes;
+   - один LUT tensor переиспользуется runners разных CUDA streams.
 
-## What v0.5 contains
+4. **Сравнение**
+   - FP32 reference, FP16, native INT8, full-RNS, hybrid FP16, hybrid RNS;
+   - core/preprocess/end-to-end latency;
+   - relative L2, cosine, max/mean absolute error;
+   - static weight memory, allocated LUT memory, workspace и CUDA peak memory;
+   - четыре одновременных CUDA streams;
+   - полная OPT self-attention latency.
 
-1. **Real QKV fusion** for OPT-style attention: three `q_proj/k_proj/v_proj` operations share one combined RNS GEMM.
-2. **Continuous batching**: requests using the same weight can be concatenated along `M` and executed once.
-3. **Safe adaptive channel prefixes**: a strict bound selects fewer channels only when reconstruction is guaranteed safe.
-4. **Stream-safe workspaces**: concurrent CUDA streams do not reuse the same writable scratch buffers.
-5. **Fused reconstruction**: modular reduction, Garner reconstruction, and signed correction run in one CUDA kernel.
-6. **Prepared static weights**: encoded model weights are cached and reused.
-7. **Compact lookup tables**: zero, one, or two small reconstruction tables can be benchmarked.
-8. **Anti-cheating checks**: benchmarks compare against an independent NumPy `int64` oracle, and PPL reporting fails if the RNS backend was not actually executed.
+5. **PPL**
+   - WikiText-2 sliding-window PPL;
+   - реальные CUDA kernels заменяют fused QKV и output projection в выбранных OPT blocks;
+   - автоматический gate: relative PPL increase `<5%`;
+   - LUT policies проверяются отдельно.
 
-Softmax is intentionally unchanged.
+6. **Nsight**
+   - Nsight Systems `.nsys-rep`, полный `.sqlite`, schema/queries SQL, stats JSON и derived JSON;
+   - Nsight Compute `.ncu-rep`, `essential` sections по умолчанию (SpeedOfLight, occupancy, memory/compute, scheduler/instruction metrics), raw/details CSV и полные JSON; `NCU_MODE=full` оставлен как опциональный exhaustive режим;
+   - matrix и complete-attention workloads для обеих архитектур.
 
-## Important current limitation
+## Attention scope
 
-The cached byte-per-residue layout does **not** reduce model-weight memory:
+Оптимизированные projection kernels заменяют fused `Q/K/V` и `out_proj`. Операции `QK^T`, causal masking, Softmax и `AV` остаются native PyTorch/Transformers и входят в измеряемую полную latency Attention. Это позволяет измерить реальный overhead non-modular operations без выдачи их за RNS-реализацию.
+
+## Главный notebook
+
+Загрузите в Google Colab:
+
+- `RNS_LLM_v0142_Full_Hybrid_Attention_Colab.ipynb`;
+- `rns_llm_v014_2_full_hybrid_attention_project.zip`.
+
+Notebook:
+
+1. клонирует `Nek1tt/rns-llm` на фиксированном commit;
+2. применяет overlay;
+3. собирает все CUDA extensions;
+4. выполняет preflight;
+5. запускает unified matrix, Attention, PPL и Nsight;
+6. создаёт `rns_llm_v0142_results.zip`.
+
+Все длительные этапы включаются отдельными переменными в первой ячейке. Стандартный Nsight-набор ограничен 55 минутами: три Systems timeline и два Compute kernel-профиля. Существующие корректные manifest-файлы пропускаются при повторном запуске.
+
+## Основные команды после применения overlay
+
+```bash
+make install-cuda
+make v014-preflight
+make v014-matrix-paper
+make v014-attention-paper
+make v014-ppl-paper
+make v014-nsight
+make v014-summary
+make v014-collect
+```
+
+## Результаты
 
 ```text
-FP16:        2 bytes/value
-native INT8: 1 byte/value
-RNS 4 ch:    4 bytes/value
+results/v0.14.2/preflight_v014.json
+results/v0.14.2/matrix/
+results/v0.14.2/attention/
+results/v0.14.2/ppl/
+results/v0.14.2/summary/
+reports/v0.14.2/ncu/
+reports/v0.14.2/nsys/
 ```
 
-Lookup-table memory is much smaller in v0.5, but table savings must not be reported as whole-model savings. A real memory advantage requires packed residues or on-the-fly residue generation inside a fused kernel.
+## Важное ограничение упаковки
 
-## Recorded pre-results
-
-The supplied v0.5 run contains:
-
-- exact fused QKV outputs with a conservative speedup of about `2.2x` over three separate RNS projections;
-- `2.13x` continuous-batching speedup for four `M=1` requests after all requests are ready;
-- exact adaptive-channel outputs, but slower runtime due to GPU-to-CPU synchronization;
-- `0.429%` PPL increase for four real OPT attention blocks.
-
-See:
-
-- [`docs/RELEASE_V05.md`](docs/RELEASE_V05.md)
-- [`results/v0.5/`](results/v0.5/)
-
-## Team tasks
-
-The next work is split into two independent areas:
-
-- RNS mathematics and boundary validation;
-- Transformer model benchmarking, PPL, and memory instrumentation.
-
-Read [`docs/TEAM_TASKS_V05.md`](docs/TEAM_TASKS_V05.md).
-
-## Build
-
-```bash
-python -m pip install --upgrade pip setuptools wheel ninja
-RNS_LLM_BUILD_CUDA=1 pip install -e ".[dev]" --no-build-isolation
-python scripts/smoke_cuda.py
-pytest -q -m cuda
-```
-
-CPU-only reference checks:
-
-```bash
-RNS_LLM_BUILD_CUDA=0 pip install -e ".[dev]"
-pytest -q
-python scripts/smoke_reference.py
-```
-
-## Main experiments
-
-### QKV fusion
-
-```bash
-python benchmarks/benchmark_qkv_fusion.py \
-  --tokens 1 16 128 256 \
-  --hidden 768 \
-  --output results/qkv_fusion.json
-```
-
-The fused output must be bit-for-bit equal to three separate `RNSLinear` operations.
-
-### Continuous batching: 1/2/4 requests
-
-```bash
-python benchmarks/benchmark_concurrency.py \
-  --m 1 --k 768 --n 768 \
-  --concurrency 1 2 4 \
-  --output results/concurrency_v05_m1.json
-```
-
-Queueing delay is not included and is explicitly marked in JSON.
-
-### Adaptive channel count
-
-```bash
-python benchmarks/benchmark_adaptive_channels.py \
-  --m 128 --k 768 --n 768 \
-  --output results/adaptive_channels.json
-```
-
-A prefix is selected only when its centered RNS capacity is strictly larger than the computed safe bound. Otherwise the full set is used; silent wrap-around is forbidden.
-
-### Verify OPT QKV arithmetic
-
-```bash
-pip install -e ".[transformer]" --no-build-isolation
-python scripts/verify_opt_qkv.py --model facebook/opt-125m --tokens 32
-```
-
-### PPL with actual attention blocks
-
-One fused QKV block plus its output projection:
-
-```bash
-python scripts/evaluate_ppl.py \
-  --model facebook/opt-125m \
-  --replacement-mode opt-qkv \
-  --attention-blocks 1 \
-  --include-out-proj \
-  --dataset-samples 64
-```
-
-Four actual Transformer attention blocks:
-
-```bash
-python scripts/evaluate_ppl.py \
-  --model facebook/opt-125m \
-  --replacement-mode opt-qkv \
-  --attention-blocks 4 \
-  --include-out-proj \
-  --dataset-samples 256
-```
-
-The script prints backend call counts and stops with an error if the model did not execute the fused RNS backend.
-
-## Correctness policy
-
-See [`docs/CORRECTNESS_GUARDS.md`](docs/CORRECTNESS_GUARDS.md).
+CUDA build и GPU benchmark не выполнялись в среде упаковки, где нет NVIDIA Toolkit/GPU. Notebook обязательно компилирует extensions и прекращает работу при провале preflight. Никакие latency, PPL или Nsight результаты заранее не подставлены.

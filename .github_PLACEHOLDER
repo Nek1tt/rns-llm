@@ -1,0 +1,2 @@
+GitHub Actions can be added after the first public commit.
+Recommended: CPU-only pytest workflow matching the original rns-llm repository.

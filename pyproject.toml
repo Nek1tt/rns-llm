@@ -1,31 +1,25 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68,<82", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "rns-llm"
-version = "0.5.0"
-description = "Research CUDA backend for RNS matrix multiplication in Transformer inference"
+version = "0.14.2"
+description = "RNS LLM full-RNS and hybrid attention, LUT, PPL, concurrency, and Nsight experiments"
 requires-python = ">=3.10"
-dependencies = [
-    "numpy>=1.24",
-]
+dependencies = ["numpy>=1.24"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.0",
+analysis = [
+  "pandas>=2,<3",
+  "matplotlib>=3.7",
 ]
 transformer = [
-    "transformers>=4.40",
-    "datasets>=2.18",
+  "transformers>=4.45,<5",
+  "datasets>=2.19,<5",
+  "accelerate>=0.33",
+  "safetensors>=0.4",
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "-q"
-markers = [
-    "cuda: requires a compiled CUDA extension and an NVIDIA GPU",
-]

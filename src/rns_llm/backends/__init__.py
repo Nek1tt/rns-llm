@@ -1,3 +1,5 @@
+from .base import RNSMatmulBackend
+from .numpy_backend import NumPyReferenceBackend
 from .cuda_backend import (
     CudaRNSBackend,
     PreparedAdaptiveRNSWeight,
@@ -9,6 +11,8 @@ from .cuda_backend import (
 from .torch_reference import TorchReferenceBackend
 
 __all__ = [
+    "RNSMatmulBackend",
+    "NumPyReferenceBackend",
     "CudaRNSBackend",
     "PreparedRNSWeight",
     "PreparedAdaptiveRNSWeight",
